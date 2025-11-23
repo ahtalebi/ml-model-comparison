@@ -332,3 +332,4 @@ MIT License - feel free to use for learning!
 **Built with ❤️ for learning ML/DevOps practices**
 
 *Last updated: November 23, 2024*
+# ml-model-comparison
