@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+venv/
+env/
+.Python
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints
+
+# Don't ignore these (we want them in repo for demo)
+# models/
+# plots/
+# data/

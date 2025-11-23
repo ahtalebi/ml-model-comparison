@@ -1,0 +1,61 @@
+name: ML Model Comparison CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  train-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+    
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: 📊 Load dataset
+      run: python src/load_data.py
+    
+    - name: 🤖 Train all models
+      run: python src/train_models.py
+    
+    - name: 🎨 Generate visualizations
+      run: python src/visualize.py
+    
+    - name: 🧪 Run tests
+      run: python tests/test_pipeline.py
+    
+    - name: 📊 Display results
+      run: |
+        echo "=== Model Comparison Results ==="
+        cat models/comparison_results.json
+    
+    - name: 💾 Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: models-and-plots
+        path: |
+          models/
+          plots/
+    
+    - name: 🌐 Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .
+        publish_branch: gh-pages
